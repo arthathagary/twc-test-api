@@ -1,6 +1,10 @@
-const getAllContacts = async (req, res, next) => {};
+const getAllContacts = async (req, res, next) => {
+  res.status(200).json({ success: "hello" });
+};
 
-const createContact = async (req, res, next) => {};
+const createContact = async (req, res, next) => {
+  res.status(200).json({ success: "hello" });
+};
 
 const getSingleContact = async (req, res, next) => {};
 
