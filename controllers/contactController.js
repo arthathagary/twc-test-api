@@ -15,6 +15,7 @@ const getAllContacts = async (req, res, next) => {
 };
 
 const createContact = async (req, res, next) => {
+  console.log(req.body.userId);
   try {
     const contact = await Contact.create(req.body);
     res.status(201).json({
