@@ -9,7 +9,7 @@ const authenticateToken = require("./lib/authenticateToken");
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://twc-test-api-ab398dcc8e83.herokuapp.com",
+  "https://twc-test-web-three.vercel.app",
 ];
 
 app.use(express.json());
