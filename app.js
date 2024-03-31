@@ -7,11 +7,24 @@ const contacts = require("./routes/contact");
 const users = require("./routes/user");
 const authenticateToken = require("./lib/authenticateToken");
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://twc-test-api-ab398dcc8e83.herokuapp.com",
+];
+
 app.use(express.json());
 // app.use(cors());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
