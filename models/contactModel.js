@@ -27,6 +27,10 @@ const contactSchema = new mongoose.Schema({
       message: "Please select correct gender",
     },
   },
+  userId: {
+    type: String,
+    required: [true, "Please insert userId"],
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

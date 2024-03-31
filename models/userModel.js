@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Please Enter Contact Email!"],
+    unique: true,
     trim: true,
     maxlenght: [100, "Contact email cannot exceed 100 charactors"],
   },

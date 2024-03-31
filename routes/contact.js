@@ -8,10 +8,10 @@ const {
 } = require("../controllers/contactController");
 const router = express.Router();
 
-router.route("/contacts").get(getAllContacts).post(createContact);
+router.route("/contacts").post(createContact);
 router
   .route("/contacts/:id")
-  .get(getSingleContact)
+  .get(getAllContacts)
   .put(updateContact)
   .delete(deleteContact);
 

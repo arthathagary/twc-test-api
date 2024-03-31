@@ -15,29 +15,33 @@ const createUser = async (req, res, next) => {
 
     if (existingUser) {
       res.status(401).json({ error: "User already exist" });
+    } else {
+      //encry the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      //save the user in db
+      const user = await User.create({
+        email,
+        password: hashedPassword,
+      });
+
+      //generate token
+      const token = jwt.sign({ id: user._id }, "shhh", {
+        expiresIn: "2h",
+      });
+
+      user.token = token;
+      user.password = undefined;
+
+      res.status(201).json(user);
     }
-
-    //encry the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    //save the user in db
-    const user = await User.create({
-      email,
-      password: hashedPassword,
-    });
-
-    //generate token
-    const token = jwt.sign({ id: user._id }, "shhh", {
-      expiresIn: "2h",
-    });
-
-    user.token = token;
-    user.password = undefined;
-
-    res.status(201).json(user);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    if (error.code === 11000) {
+      res.status(400).json({ error: "Email already in use" });
+    } else {
+      console.log(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   }
 };
 
@@ -53,6 +57,10 @@ const userLogin = async (req, res, next) => {
 
     if (!user) {
       res.status(400).json({ error: "User Missing" });
+    }
+
+    if (user && !(await bcrypt.compare(password, user.password))) {
+      res.status(401).json({ error: "Password is wrong" });
     }
 
     if (user && (await bcrypt.compare(password, user.password))) {
