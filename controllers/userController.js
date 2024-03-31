@@ -59,6 +59,10 @@ const userLogin = async (req, res, next) => {
       res.status(400).json({ error: "User Missing" });
     }
 
+    if (user && !(await bcrypt.compare(password, user.password))) {
+      res.status(401).json({ error: "Password is wrong" });
+    }
+
     if (user && (await bcrypt.compare(password, user.password))) {
       var token = jwt.sign({ id: user._id }, "shhh", {
         expiresIn: "2h",
