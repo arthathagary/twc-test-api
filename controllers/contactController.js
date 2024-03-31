@@ -2,7 +2,8 @@ const Contact = require("../models/contactModel");
 
 const getAllContacts = async (req, res, next) => {
   try {
-    const contacts = await Contact.find({});
+    const userId = req.params.id;
+    const contacts = await Contact.find({ userId: userId });
     res.status(200).json({
       success: true,
       count: contacts.length,
@@ -15,7 +16,6 @@ const getAllContacts = async (req, res, next) => {
 };
 
 const createContact = async (req, res, next) => {
-  console.log(req.body.userId);
   try {
     const contact = await Contact.create(req.body);
     res.status(201).json({
